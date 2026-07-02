@@ -609,6 +609,27 @@ p {
     background: rgba(255, 77, 136, .25);
     border: 1px solid #ff4d88;
     font-weight: 700;
+    position: relative;
+}
+
+.cal-day.today::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #ff4d88;
+    border-radius: 50%;
+}
+
+.cal-day.selected {
+    background: #ff4d88;
+    color: #fff;
+    font-weight: 700;
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(255, 77, 136, .5);
 }
 
 .cal-day:not(.disabled):not(.today):active {

@@ -398,7 +398,7 @@ function showFinal() {
 // =============================================
 let calMonth, calYear;
 const TODAY = new Date();
-const TODAY_STR = TODAY.toISOString().split('T')[0];
+const TODAY_STR = `${TODAY.getFullYear()}-${String(TODAY.getMonth()+1).padStart(2,'0')}-${String(TODAY.getDate()).padStart(2,'0')}`;
 
 function setupCalendar() {
     calMonth = TODAY.getMonth();
@@ -421,7 +421,13 @@ function buildCalendarHTML() {
     for (let i = 0; i < first; i++) h += `<span class="cal-empty"></span>`;
     for (let day = 1; day <= daysInMonth; day++) {
         const ds = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const cls = ds < TODAY_STR ? 'cal-day disabled' : ds === TODAY_STR ? 'cal-day today' : 'cal-day';
+        const isToday = ds === TODAY_STR;
+        const isSelected = ds === selectedDate;
+        let cls = 'cal-day';
+        if (ds < TODAY_STR) cls = 'cal-day disabled';
+        else if (isToday && isSelected) cls = 'cal-day today selected';
+        else if (isToday) cls = 'cal-day today';
+        else if (isSelected) cls = 'cal-day selected';
         h += `<span class="${cls}" data-date="${ds}">${day}</span>`;
     }
     h += `</div>`;
@@ -498,6 +504,9 @@ function renderCalPopup(popup) {
             const dv = el.getAttribute('data-date');
             document.getElementById('date').value = dv;
             selectedDate = dv;
+            // Mark selected day visually
+            popup.querySelectorAll('.cal-day').forEach(dd => dd.classList.remove('selected'));
+            el.classList.add('selected');
             const d = new Date(dv + 'T00:00:00');
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
