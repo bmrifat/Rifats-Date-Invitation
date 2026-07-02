@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard 💕</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <style>
+        /* ========================================
+           ADMIN DASHBOARD STYLES
+           ======================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #1a0a2e, #2d1b4e, #4a1942, #16213e);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+            color: #fff;
+            padding: 30px 20px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ---- Header ---- */
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .admin-header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #ff6b9d, #ffa8c5, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .admin-header p {
+            color: rgba(255, 255, 255, .6);
+            font-size: 0.95rem;
+        }
+
+        /* ---- Stats Cards ---- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, .1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, .15);
+            border-radius: 20px;
+            padding: 24px 18px;
+            text-align: center;
+        }
+
+        .stat-card .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .stat-number {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b9d, #ffa8c5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, .5);
+            margin-top: 4px;
+        }
+
+        /* ---- Loading / Empty ---- */
+        .status-msg {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, .5);
+        }
+
+        .status-msg .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, .15);
+            border-top-color: #ff6b9d;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ---- Invitations List ---- */
+        .invitations-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .invitation-card {
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 20px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 16px;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .invitation-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, .15);
+        }
+
+        .inv-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: rgba(255, 255, 255, .2);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .inv-details {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .inv-details .inv-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .inv-details .inv-label {
+            color: rgba(255, 255, 255, .4);
+            min-width: 70px;
+        }
+
+        .inv-details .inv-value {
+            color: #ffa8c5;
+            font-weight: 600;
+        }
+
+        .inv-date-badge {
+            background: linear-gradient(135deg, rgba(255, 107, 157, .25), rgba(255, 168, 197, .25));
+            border: 1px solid rgba(255, 107, 157, .3);
+            border-radius: 12px;
+            padding: 10px 14px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #ffa8c5;
+            white-space: nowrap;
+        }
+
+        .inv-date-badge .inv-time {
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ---- Footer ---- */
+        .admin-footer {
+            text-align: center;
+            margin-top: 50px;
+            color: rgba(255, 255, 255, .25);
+            font-size: 0.8rem;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 600px) {
+            .admin-header h1 {
+                font-size: 2rem;
+            }
+
+            .invitation-card {
+                grid-template-columns: auto 1fr;
+                padding: 18px;
+            }
+
+            .inv-date-badge {
+                grid-column: 1 / -1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ====== Header ====== -->
+    <div class="admin-header">
+        <h1>💕 Love Dashboard</h1>
+        <p>See who's been invited on a date</p>
+    </div>
+
+    <!-- ====== Stats ====== -->
+    <div class="stats-grid" id="stats">
+        <div class="stat-card">
+            <div class="stat-icon">💌</div>
+            <div class="stat-number" id="totalCount">...</div>
+            <div class="stat-label">Total Invitations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div class="stat-number" id="latestDate">...</div>
+            <div class="stat-label">Latest Date</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🍕</div>
+            <div class="stat-number" id="topFood">...</div>
+            <div class="stat-label">Most Popular Food</div>
+        </div>
+    </div>
+
+    <!-- ====== Invitations ====== -->
+    <div id="content">
+        <div class="status-msg">
+            <div class="spinner"></div>
+            Loading invitations...
+        </div>
+    </div>
+
+    <!-- ====== Footer ====== -->
+    <div class="admin-footer">
+        Made with ❤️ for Rifat's Date Invitation
+    </div>
+
+    <!-- ====== Firebase SDK ====== -->
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // =============================================
+        // EXPLAIN: Firebase Config — same config as main app
+        // This connects to YOUR Firebase project
+        // =============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKmH63bIXMjasE5FDZ5baqgw8KVT07hhc",
+            authDomain: "date-invitation-1cd66.firebaseapp.com",
+            projectId: "date-invitation-1cd66",
+            storageBucket: "date-invitation-1cd66.firebasestorage.app",
+            messagingSenderId: "321188338430",
+            appId: "1:321188338430:web:362175d10ca55b9e14e3af",
+            measurementId: "G-MWVCS8TW3J"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // =============================================
+        // EXPLAIN: This function loads ALL invitations
+        // from Firestore 'invitations' collection
+        // and renders them as cards
+        // =============================================
+        async function loadInvitations() {
+            const contentEl = document.getElementById('content');
+            const totalCountEl = document.getElementById('totalCount');
+            const latestDateEl = document.getElementById('latestDate');
+            const topFoodEl = document.getElementById('topFood');
+
+            try {
+                // EXPLAIN: db.collection('invitations') gets the collection
+                // .orderBy('createdAt', 'desc') sorts newest first
+                // .get() fetches all documents
+                const snapshot = await db.collection('invitations')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+
+                if (snapshot.empty) {
+                    contentEl.innerHTML = `
+                        <div class="status-msg">
+                            <div style="font-size: 3rem; margin-bottom: 16px;">📭</div>
+                            <p>No invitations yet!</p>
+                            <p style="font-size: 0.8rem; margin-top: 8px;">
+                                Share the app and wait for someone to respond 💕
+                            </p>
+                        </div>
+                    `;
+                    totalCountEl.textContent = '0';
+                    latestDateEl.textContent = '—';
+                    topFoodEl.textContent = '—';
+                    return;
+                }
+
+                // EXPLAIN: snapshot.docs is an array of all documents
+                // We use .map() to extract data from each document
+                const invitations = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                // ---- Calculate Stats ----
+                totalCountEl.textContent = invitations.length;
+
+                // Latest date
+                const firstInv = invitations[0];
+                latestDateEl.textContent = firstInv.dateFormatted || firstInv.date || '—';
+
+                // Most popular food (count occurrences)
+                const foodCounts = {};
+                invitations.forEach(inv => {
+                    const food = inv.food || 'Unknown';
+                    foodCounts[food] = (foodCounts[food] || 0) + 1;
+                });
+                const topFood = Object.entries(foodCounts).sort((a, b) => b[1] - a[1])[0];
+                topFoodEl.textContent = topFood ? topFood[0] : '—';
+
+                // ---- Render Cards ----
+                // EXPLAIN: We build HTML for each invitation card
+                let html = '<div class="invitations-list">';
+
+                invitations.forEach((inv, index) => {
+                    // EXPLAIN: Format the timestamp to readable date
+                    let timeStr = '';
+                    if (inv.createdAt) {
+                        // Firestore Timestamp has a .toDate() method
+                        if (inv.createdAt.toDate) {
+                            const d = inv.createdAt.toDate();
+                            timeStr = d.toLocaleDateString('en-US', {
+                                year: 'numeric', month: 'short', day: 'numeric'
+                            }) + ' • ' + d.toLocaleTimeString('en-US', {
+                                hour: '2-digit', minute: '2-digit'
+                            });
+                        } else {
+                            // If it's already a date string
+                            timeStr = new Date(inv.createdAt).toLocaleString();
+                        }
+                    }
+
+                    html += `
+                        <div class="invitation-card">
+                            <div class="inv-number">#${index + 1}</div>
+                            <div class="inv-details">
+                                <div class="inv-row">
+                                    <span class="inv-label">📅 Date</span>
+                                    <span class="inv-value">${inv.dateFormatted || inv.date || '—'}</span>
+                                </div>
+                                <div class="inv-row">
+                                    <span class="inv-label">🍕 Food</span>
+                                    <span class="inv-value">${inv.food || '—'}</span>
+                                </div>
+                                <div class="inv-row">
+                                    <span class="inv-label">🎬 Activity</span>
+                                    <span class="inv-value">${inv.activity || '—'}</span>
+                                </div>
+                            </div>
+                            <div class="inv-date-badge">
+                                Submitted
+                                <span class="inv-time">${timeStr}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                contentEl.innerHTML = html;
+
+            } catch (error) {
+                // EXPLAIN: If there's an error (e.g. Firestore rules block access),
+                // we show a friendly error message
+                console.error('Error loading invitations:', error);
+                contentEl.innerHTML = `
+                    <div class="status-msg">
+                        <div style="font-size: 3rem; margin-bottom: 16px;">⚠️</div>
+                        <p>Could not load invitations</p>
+                        <p style="font-size: 0.8rem; margin-top: 8px; color: #ff6b9d;">
+                            ${error.message}
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // EXPLAIN: Run the function when page loads
+        loadInvitations();
+    </script>
+</body>
+
+</html>
