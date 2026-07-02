@@ -173,6 +173,7 @@ function showLoveLetter() {
 // SCREEN 6 — CHOOSE DATE
 // =============================================
 let selectedDate = '';
+let userName = '';
 
 function showChooseDate() {
     render(`
@@ -180,7 +181,10 @@ function showChooseDate() {
             <h1>Choose Our Date ❤️</h1>
             <p>I can't wait to spend time with you 🥰</p>
 
-            <label class="section-label">📅 Pick a Date</label>
+            <label class="section-label">� What's your name?</label>
+            <input type="text" id="nameInput" class="name-input" placeholder="Type your name..." maxlength="30">
+
+            <label class="section-label">�📅 Pick a Date</label>
             <input type="hidden" id="date" value="">
             <div class="date-picker-wrap" id="datePickerWrap">
                 <div class="date-display" id="dateDisplay">Tap to pick a date...</div>
@@ -232,6 +236,8 @@ function showChooseDate() {
         if (!selectedDate) { shakeEl('datePickerWrap'); return; }
         if (!food) { shakeEl('foodGrid'); return; }
         selectedFood = food.getAttribute('data-value');
+        userName = document.getElementById('nameInput').value.trim();
+        if (!userName) { shakeEl('nameInput'); return; }
         showChooseFood();
     });
 }
@@ -349,6 +355,7 @@ function showFinal() {
             <div class="success-emoji">🎉</div>
             <img src="https://media.tenor.com/Qq1hnouswVwAAAAj/peach-cat-dancing.gif" class="cat">
             <h1>It's a Date! ❤️</h1>
+            <p class="date-name">Dear <strong>${userName}</strong>, here's your date plan:</p>
 
             <div class="summary-cards">
                 <div class="summary-card">
@@ -376,6 +383,7 @@ function showFinal() {
 
     // Save to Firestore
     db.collection('invitations').add({
+        name: userName,
         date: selectedDate,
         dateFormatted: dateFormatted,
         food: selectedFood,

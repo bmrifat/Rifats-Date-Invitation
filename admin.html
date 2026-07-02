@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invitations Dashboard 💕</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap"
+        rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             min-height: 100vh;
@@ -21,9 +28,17 @@
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .dashboard-header {
@@ -40,7 +55,7 @@
         }
 
         .dashboard-header p {
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.6);
             font-size: 0.95rem;
         }
 
@@ -53,9 +68,9 @@
         }
 
         .stat-box {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 16px;
             padding: 18px 30px;
             text-align: center;
@@ -70,7 +85,7 @@
 
         .stat-box .stat-label {
             font-size: 0.8rem;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -84,9 +99,9 @@
         }
 
         .invitation-card {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(14px);
-            border: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 20px;
             padding: 25px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -103,7 +118,7 @@
             gap: 12px;
             margin-bottom: 18px;
             padding-bottom: 14px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .card-number {
@@ -121,7 +136,7 @@
         }
 
         .card-time {
-            color: rgba(255,255,255,0.45);
+            color: rgba(255, 255, 255, 0.45);
             font-size: 0.78rem;
             margin-left: auto;
         }
@@ -152,7 +167,7 @@
 
         .detail-label {
             font-size: 0.7rem;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255, 255, 255, 0.4);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -172,7 +187,7 @@
         .loading-screen .spinner {
             width: 50px;
             height: 50px;
-            border: 4px solid rgba(255,255,255,0.15);
+            border: 4px solid rgba(255, 255, 255, 0.15);
             border-top: 4px solid #ff6b9d;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
@@ -180,11 +195,13 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .loading-screen p {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .empty-state {
@@ -198,18 +215,28 @@
         }
 
         .empty-state p {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
             font-size: 1rem;
         }
 
         /* Responsive */
         @media (max-width: 500px) {
-            .dashboard-header h1 { font-size: 1.8rem; }
-            .invitations-grid { grid-template-columns: 1fr; }
-            .stat-box { min-width: 100px; padding: 14px 18px; }
+            .dashboard-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .invitations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-box {
+                min-width: 100px;
+                padding: 14px 18px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="dashboard-header">
@@ -284,6 +311,11 @@
                 document.getElementById('statsBar').style.display = 'flex';
                 document.getElementById('totalCount').textContent = docs.length;
 
+                // Count unique names
+                const uniqueNames = [...new Set(docs.map(d => d.name).filter(Boolean))];
+                const nameStatLabel = document.querySelector('.stat-box:nth-child(5) .stat-label');
+                const nameStatNumber = document.querySelector('.stat-box:nth-child(5) .stat-number');
+
                 // Count today's invitations
                 const todayStr = new Date().toISOString().split('T')[0];
                 const todayDocs = docs.filter(d => d.date === todayStr);
@@ -296,8 +328,8 @@
                     if (d.food) foodCounts[d.food] = (foodCounts[d.food] || 0) + 1;
                     if (d.activity) actCounts[d.activity] = (actCounts[d.activity] || 0) + 1;
                 });
-                const topFood = Object.entries(foodCounts).sort((a,b) => b[1] - a[1])[0];
-                const topAct = Object.entries(actCounts).sort((a,b) => b[1] - a[1])[0];
+                const topFood = Object.entries(foodCounts).sort((a, b) => b[1] - a[1])[0];
+                const topAct = Object.entries(actCounts).sort((a, b) => b[1] - a[1])[0];
                 document.getElementById('favFood').textContent = topFood ? topFood[0] : '-';
                 document.getElementById('favActivity').textContent = topAct ? topAct[0] : '-';
 
@@ -322,10 +354,17 @@
                     card.innerHTML = `
                         <div class="card-header">
                             <div class="card-number">${docs.length - i}</div>
-                            <span style="font-weight:600;">Invitation #${docs.length - i}</span>
+                            <span style="font-weight:600;">${data.name ? data.name : 'Someone'}'s Invitation #${docs.length - i}</span>
                             <span class="card-time">${timeAgo}</span>
                         </div>
                         <div class="card-details">
+                            <div class="detail-row">
+                                <span class="detail-emoji">👤</span>
+                                <div class="detail-info">
+                                    <span class="detail-label">Name</span>
+                                    <span class="detail-value">${data.name || 'Anonymous'}</span>
+                                </div>
+                            </div>
                             <div class="detail-row">
                                 <span class="detail-emoji">📅</span>
                                 <div class="detail-info">
@@ -362,4 +401,5 @@
             });
     </script>
 </body>
+
 </html>
